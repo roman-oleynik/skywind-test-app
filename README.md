@@ -1,41 +1,38 @@
-# Webpack 4 Boilerplate Typescript/Sass with build-in option to change preprocessor (less/stylus)
-This Webpack 4 Boilerplate comes with 2 builds:
+[![Netlify Status](https://api.netlify.com/api/v1/badges/14e7ef42-5c90-44c8-a7ec-0b6e20c59735/deploy-status)](https://pixi-typescript-boilerplate.netlify.com) ![Windows build](https://github.com/jkanchelov/pixi-typescript-boilerplate/workflows/Windows%20build/badge.svg?branch=master) ![Linux build](https://github.com/jkanchelov/pixi-typescript-boilerplate/workflows/Linux%20build/badge.svg) ![MacOs build](https://github.com/jkanchelov/pixi-typescript-boilerplate/workflows/MacOs%20build/badge.svg)
 
---> <code>npm run build:dev</code><br>
-  starts dev server on <code>localhost:8080</code> with livereload, sourcemap
+# pixi-typescript-boilerplate
 
---> <code>npm run build:prod</code><br>
-  creates prod files to <code>/dist</code> with:
+## Beginner friendly template for pixi.js with [Webpack](https://webpack.js.org/)
 
-  1. compiles sass/stylus/less to css <br>
-  2. autoprefixer for vendor prefixes (browser compability)<br>
-  3. compiles typescript to ES5 <br>
-  4. minifying for css/js <br>
-  5. uglyfing js code <br>
-  6. hash css and js file (file versioning for browser caching -> cache busting)<br>
+---
 
-# Setup
-1. <code>git clone https://github.com/mwieth/Webpack-4-boilerplate-Typescript.git</code>clone and run <code>npm install</code> in project folder
-2. <code>npm run build:dev</code> or just <code>npm start</code> which also starts the dev mode
+#### The previous version done with [Parcel](https://parceljs.org/), which I won't support any further is [here](https://github.com/jkanchelov/pixi-typescript-boilerplate/tree/parcel-template)
 
-# Preprocessor support (default: Sass)
+---
 
---> if u want to change to <strong>less</strong> run:
+## Highlights
 
-  1. <code>npm install less less-loader --save-dev</code>
-  2. <code>npm uninstall node-sass sass-loader</code>
+-   🔰 - Beginner friendly.
+-   🛠 - Typescript + Babel.
+-   ✈️ - Live reload.
+-   🚀 - Blazing fast bundle times
+-   📝 - Consistent code style using Prettier and Eslint
+-   📝 - Unit test support with [Jest](https://jestjs.io/), generating code coverage.
 
-  3. set selectedPreprocessor in \webpack\loader.js to less
+## Usage
 
-  4. change default files in styles from sass to less
+### Click on the green button "Use this template" on top of the repo or <br> <br> Simply copy paste this and start coding
 
---> if u want to change to <strong>stylus</strong> run:
+`git clone --depth=1 --branch=master https://github.com/jkanchelov/pixi-typescript-boilerplate`
 
-  1. <code>npm install stylus stylus-loader --save-dev</code>
-  2. <code>npm uninstall node-sass sass-loader</code>
+`rm -r -force ./pixi-typescript-boilerplate/.git`
 
-  3. set selectedPreprocessor in \webpack\loader.js to stylus
+## Commands:
 
-  4. change default files in styles from sass to stylus (*.styl)
+-   `npm run build` - starts build procedure
+-   `npm run dev` - start watching for files and open's server on localhost:8080
+-   `npm run test` - run tests
+-   `npm run code-coverage` - generate code coverage report
+-   `npm run code-style-check` - run's eslint and prettier check on your code
 
---> if u want to use the 'original' loose *.sass syntax just change the files from *.scss to *.sass and update import in index.js line 1
+For vscode users - ctrl ( or ⌘ ) + shift + b will run the watch build as its set as default vscode task
