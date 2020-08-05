@@ -1,10 +1,18 @@
 import * as PIXI from "pixi.js";
+import { SymbolsPack } from "./components/model/SymbolsModel";
+import { BoardModel } from "./components/model/BoardModel";
+// import { ReelArray } from "./components/model/ReelModel";
+import { BoardRenderer } from "./components/view/Renderer";
+// import { BoardAnimator } from "./components/view/Animator";
 
 import "./style.css";
 
 export class Main {
     private static readonly GAME_WIDTH = 800;
     private static readonly GAME_HEIGHT = 600;
+    private readonly symbolsPack = SymbolsPack.getInstance();
+    private readonly SpinButtonSprites = this.symbolsPack.getSpinButtonSprites();
+    private readonly Symbols = this.symbolsPack.getSymbols();
 
     private app!: PIXI.Application;
 
@@ -14,14 +22,12 @@ export class Main {
         };
     }
 
-    // add for the test example purpose
-    public helloWorld(): string {
-        return "hello world";
-    }
-
     private startLoadingAssets(): void {
         const loader = PIXI.Loader.shared;
-        loader.add("rabbit", "./assets/simpleSpriteSheet.json");
+
+        for (const key in this.Symbols) {
+            loader.add(key, this.Symbols[key].getUrl());
+        }
 
         loader.onComplete.once(() => {
             this.onAssetsLoaded();
@@ -35,25 +41,79 @@ export class Main {
 
         const stage = this.app.stage;
 
-        const birdFromSprite = this.getBird();
-        birdFromSprite.anchor.set(0.5, 0.5);
-        birdFromSprite.position.set(Main.GAME_WIDTH / 2, Main.GAME_HEIGHT / 2);
+        const spritesArr = new BoardModel();
+        const boardRenderer = new BoardRenderer(spritesArr, stage, this.app.renderer, this.app.ticker, 140);
+        boardRenderer.render();
 
-        stage.addChild(birdFromSprite);
+        // const boardAnimator = new BoardAnimator(spritesArr, this.app.renderer, stage, this.app.ticker);
+        // boardAnimator.runDropDown();
+
+        // const reelsArr = spritesArr.getReels();
+        // const sprite = reelsArr[0][0].getView();
+        // console.log(stage.render);
+        // const dropDown = () => {
+        //     sprite.position.y += 20;
+        //     if (sprite.position.y >= 600) {
+        //         sprite.position.y = -300;
+        //         this.app.ticker.remove(dropDown);
+        //         // sprite.position.y += 20;
+        //     }
+        //     this.app.renderer.render(stage);
+        // };
+        // this.app.ticker.add(dropDown);
+
+        // const rand = Math.floor(Math.random() * 7) + 1;
+
+        // const sprite1 = this.symbolsPack.getSymbols()[`symbol-${rand}`].getView();
+        // console.log(sprite1);
+
+        // sprite.position.x = 30;
+        // sprite.position.y = 0;
+        // sprite.height = 80;
+        // sprite.width = 80;
+        // stage.addChild(sprite);
+
+        // const dropDown = () => {
+        //     sprite.rotation += 0.005;
+        //     if (sprite.rotation >= 0.05) {
+        //         sprite.rotation = 0.05;
+        //     }
+        //     sprite.position.y += 20;
+        //     if (sprite.position.y >= 600) {
+        //         sprite.position.y = -300;
+        //         sprite.position.y += 20;
+        //     }
+        //     this.app.renderer.render(stage);
+        // };
+        // const rotate = () => {
+        //     sprite.rotation -= 0.005;
+        //     if (sprite.rotation <= 0) {
+        //         sprite.rotation = 0;
+        //         this.app.ticker.remove(rotate);
+        //     }
+        //     console.log(sprite.rotation);
+        // };
+
+        // this.app.ticker.add(dropDown);
+
+        // setTimeout(() => {
+        //     this.app.ticker.remove(dropDown);
+        //     this.app.ticker.add(rotate);
+        // }, 1000);
     }
 
     private createRenderer(): void {
         this.app = new PIXI.Application({
-            backgroundColor: 0xd3d3d3,
+            backgroundColor: 0x000000,
             width: Main.GAME_WIDTH,
             height: Main.GAME_HEIGHT,
         });
 
         document.body.appendChild(this.app.view);
 
-        this.app.renderer.resize(window.innerWidth, window.innerHeight);
-        this.app.stage.scale.x = window.innerWidth / Main.GAME_WIDTH;
-        this.app.stage.scale.y = window.innerHeight / Main.GAME_HEIGHT;
+        this.app.renderer.resize(Main.GAME_WIDTH, Main.GAME_HEIGHT);
+        // this.app.stage.scale.x = window.innerWidth / Main.GAME_WIDTH;
+        // this.app.stage.scale.y = window.innerHeight / Main.GAME_HEIGHT;
 
         window.addEventListener("resize", this.onResize.bind(this));
     }
@@ -63,23 +123,9 @@ export class Main {
             return;
         }
 
-        this.app.renderer.resize(window.innerWidth, window.innerHeight);
-        this.app.stage.scale.x = window.innerWidth / Main.GAME_WIDTH;
-        this.app.stage.scale.y = window.innerHeight / Main.GAME_HEIGHT;
-    }
-
-    private getBird(): PIXI.AnimatedSprite {
-        const bird = new PIXI.AnimatedSprite([
-            PIXI.Texture.from("birdUp.png"),
-            PIXI.Texture.from("birdMiddle.png"),
-            PIXI.Texture.from("birdDown.png"),
-        ]);
-        bird.loop = true;
-        bird.animationSpeed = 0.1;
-        bird.play();
-        bird.scale.set(3);
-
-        return bird;
+        this.app.renderer.resize(Main.GAME_WIDTH, Main.GAME_HEIGHT);
+        // this.app.stage.scale.x = window.innerWidth / Main.GAME_WIDTH;
+        // this.app.stage.scale.y = window.innerHeight / Main.GAME_HEIGHT;
     }
 }
 
