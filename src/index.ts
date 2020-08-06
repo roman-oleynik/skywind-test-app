@@ -1,8 +1,9 @@
 import * as PIXI from "pixi.js";
 import { SymbolsPack } from "./components/model/SymbolsModel";
 import { BoardModel } from "./components/model/BoardModel";
-import { BoardRenderer } from "./components/view/Renderer";
-import { BoardAnimator } from "./components/view/Animator";
+import { BoardRenderer } from "./components/view/BoardRenderer";
+import { BoardAnimator } from "./components/view/BoardAnimator";
+import { SpinButtonController } from "./components/controller/SpinButtonController";
 
 import "./style.css";
 
@@ -44,61 +45,9 @@ export class Main {
         const boardRenderer = new BoardRenderer(spritesArr, stage, this.app.renderer, this.app.ticker, 150);
         boardRenderer.render();
 
-        const boardAnimator = new BoardAnimator(spritesArr, this.app.renderer, stage, this.app.ticker);
-        boardAnimator.runDropDown();
+        const boardAnimator = new BoardAnimator(spritesArr, this.app.renderer, stage, this.app.ticker, 150);
 
-        // const reelsArr = spritesArr.getReels();
-        // const sprite = reelsArr[0][0].getView();
-        // console.log(stage.render);
-        // const dropDown = () => {
-        //     sprite.position.y += 20;
-        //     if (sprite.position.y >= 600) {
-        //         sprite.position.y = -300;
-        //         this.app.ticker.remove(dropDown);
-        //         // sprite.position.y += 20;
-        //     }
-        //     this.app.renderer.render(stage);
-        // };
-        // this.app.ticker.add(dropDown);
-
-        // const rand = Math.floor(Math.random() * 7) + 1;
-
-        // const sprite1 = this.symbolsPack.getSymbols()[`symbol-${rand}`].getView();
-        // console.log(sprite1);
-
-        // sprite.position.x = 30;
-        // sprite.position.y = 0;
-        // sprite.height = 80;
-        // sprite.width = 80;
-        // stage.addChild(sprite);
-
-        // const dropDown = () => {
-        //     sprite.rotation += 0.005;
-        //     if (sprite.rotation >= 0.05) {
-        //         sprite.rotation = 0.05;
-        //     }
-        //     sprite.position.y += 20;
-        //     if (sprite.position.y >= 600) {
-        //         sprite.position.y = -300;
-        //         sprite.position.y += 20;
-        //     }
-        //     this.app.renderer.render(stage);
-        // };
-        // const rotate = () => {
-        //     sprite.rotation -= 0.005;
-        //     if (sprite.rotation <= 0) {
-        //         sprite.rotation = 0;
-        //         this.app.ticker.remove(rotate);
-        //     }
-        //     console.log(sprite.rotation);
-        // };
-
-        // this.app.ticker.add(dropDown);
-
-        // setTimeout(() => {
-        //     this.app.ticker.remove(dropDown);
-        //     this.app.ticker.add(rotate);
-        // }, 1000);
+        new SpinButtonController(boardAnimator, stage);
     }
 
     private createRenderer(): void {

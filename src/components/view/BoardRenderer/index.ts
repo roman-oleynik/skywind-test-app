@@ -14,7 +14,7 @@ export class BoardRenderer {
         private readonly size: number
     ) {
         this.marginLeft = (800 - this.size * 5) / 2;
-        this.marginTop = (600 - this.size * 3) / 2;
+        this.marginTop = 40;
     }
     public render(): void {
         const reelsArr = this.board.getReels();
