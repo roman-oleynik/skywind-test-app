@@ -16,7 +16,7 @@ export class BoardRenderer {
         this.marginLeft = (800 - this.size * 5) / 2;
         this.marginTop = 40;
     }
-    public render(): void {
+    public renderInitially(): void {
         const reelsArr = this.board.getReels();
 
         reelsArr.forEach((reel: ReelArray, reelIndex: number) => {
@@ -26,6 +26,23 @@ export class BoardRenderer {
                     this.size,
                     this.marginLeft + reelIndex * this.size,
                     this.marginTop + i * this.size
+                );
+                const sprite = el.getView();
+
+                this.stage.addChild(sprite);
+            });
+        });
+    }
+    public rerender(): void {
+        const reelsArr = this.board.getReels();
+
+        reelsArr.forEach((reel: ReelArray, reelIndex: number) => {
+            return reel.forEach((el: Sprite, i: number) => {
+                el.setView(
+                    this.size,
+                    this.size,
+                    this.marginLeft + reelIndex * this.size,
+                    this.marginTop - 600 + i * this.size
                 );
                 const sprite = el.getView();
 

@@ -42,8 +42,9 @@ export class Main {
         const stage = this.app.stage;
 
         const spritesArr = new BoardModel();
+
         const boardRenderer = new BoardRenderer(spritesArr, stage, this.app.renderer, this.app.ticker, 150);
-        boardRenderer.render();
+        boardRenderer.renderInitially();
 
         const boardAnimator = new BoardAnimator(spritesArr, this.app.renderer, stage, this.app.ticker, 150);
 
