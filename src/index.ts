@@ -1,9 +1,8 @@
 import * as PIXI from "pixi.js";
 import { SymbolsPack } from "./components/model/SymbolsModel";
 import { BoardModel } from "./components/model/BoardModel";
-// import { ReelArray } from "./components/model/ReelModel";
 import { BoardRenderer } from "./components/view/Renderer";
-// import { BoardAnimator } from "./components/view/Animator";
+import { BoardAnimator } from "./components/view/Animator";
 
 import "./style.css";
 
@@ -42,11 +41,11 @@ export class Main {
         const stage = this.app.stage;
 
         const spritesArr = new BoardModel();
-        const boardRenderer = new BoardRenderer(spritesArr, stage, this.app.renderer, this.app.ticker, 140);
+        const boardRenderer = new BoardRenderer(spritesArr, stage, this.app.renderer, this.app.ticker, 150);
         boardRenderer.render();
 
-        // const boardAnimator = new BoardAnimator(spritesArr, this.app.renderer, stage, this.app.ticker);
-        // boardAnimator.runDropDown();
+        const boardAnimator = new BoardAnimator(spritesArr, this.app.renderer, stage, this.app.ticker);
+        boardAnimator.runDropDown();
 
         // const reelsArr = spritesArr.getReels();
         // const sprite = reelsArr[0][0].getView();

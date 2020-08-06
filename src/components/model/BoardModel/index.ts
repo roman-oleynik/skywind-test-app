@@ -20,6 +20,10 @@ export class BoardModel {
         this.board = result;
     }
 
+    public refreshBoard(): void {
+        this.fillBoardByReels();
+    }
+
     public getReels(): BoardArray {
         return this.board;
     }

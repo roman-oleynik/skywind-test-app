@@ -4,7 +4,10 @@ export class Sprite {
     private view: PIXI.Sprite;
 
     constructor(private readonly url: string) {
-        this.view = this.getView();
+        const texture = PIXI.Texture.from(this.url);
+        const sprite = PIXI.Sprite.from(texture);
+
+        this.view = sprite;
     }
 
     public getUrl(): string {
@@ -12,16 +15,13 @@ export class Sprite {
     }
 
     public getView(): PIXI.Sprite {
-        const texture = PIXI.Texture.from(this.url);
-        const sprite = new PIXI.Sprite(texture);
-
-        return sprite;
+        return this.view;
     }
-    public setView(sprite: PIXI.Sprite, height: number, width: number, x: number, y: number): void {
-        sprite.height = height;
-        sprite.width = width;
-        sprite.position.x = x;
-        sprite.position.y = y;
+    public setView(height: number, width: number, x: number, y: number): void {
+        this.view.height = height;
+        this.view.width = width;
+        this.view.position.x = x;
+        this.view.position.y = y;
     }
 }
 
