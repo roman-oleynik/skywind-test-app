@@ -4,8 +4,8 @@ import { Sprite } from "../../model/SymbolsModel";
 import { ReelArray } from "../../model/ReelModel";
 
 export class BoardRenderer {
-    private marginTop = 0;
-    private marginLeft = 0;
+    public marginTop = 0;
+    public marginLeft = 0;
     constructor(
         private board: BoardModel,
         private readonly stage: PIXI.Container,

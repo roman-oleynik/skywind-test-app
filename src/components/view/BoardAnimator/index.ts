@@ -117,7 +117,9 @@ export class BoardAnimator {
                         }
                         this.renderer.render(this.stage);
                     };
-                    this.ticker.add(fall);
+                    setTimeout(() => {
+                        this.ticker.add(fall);
+                    }, Math.floor(Math.random() * 70) + 30);
                 });
             }, 30 * reelIndex);
         });
