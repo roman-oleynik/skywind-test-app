@@ -13,8 +13,8 @@ export class BoardRenderer {
         private readonly ticker: PIXI.Ticker,
         private readonly size: number
     ) {
-        this.marginLeft = (800 - this.size * 5) / 2;
-        this.marginTop = 40;
+        this.marginLeft = (800 - this.size * 5) / 2 + this.size;
+        this.marginTop = 40 + this.size;
     }
     public renderInitially(): void {
         const reelsArr = this.board.getReels();
@@ -29,6 +29,8 @@ export class BoardRenderer {
                 );
                 const sprite = el.getView();
 
+                sprite.anchor.y = 1;
+                sprite.anchor.x = 1;
                 this.stage.addChild(sprite);
             });
         });
@@ -44,8 +46,10 @@ export class BoardRenderer {
                     this.marginLeft + reelIndex * this.size,
                     this.marginTop - 600 + i * this.size
                 );
-                const sprite = el.getView();
 
+                const sprite = el.getView();
+                sprite.anchor.y = 1;
+                sprite.anchor.x = 1;
                 this.stage.addChild(sprite);
             });
         });

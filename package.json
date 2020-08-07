@@ -20,8 +20,9 @@
     "license": "MIT",
     "dependencies": {
         "core-js": "^3.6.5",
-        "pixi.js": "^5.3.0",
-        "howler": "^2.2.0"
+        "howler": "^2.2.0",
+        "pixi-charm": "^4.5.3",
+        "pixi.js": "^5.3.0"
     },
     "devDependencies": {
         "@babel/core": "^7.10.3",

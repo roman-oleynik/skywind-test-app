@@ -1,3 +1,4 @@
+import * as PIXI from "pixi.js";
 import { SymbolsPack, Sprite } from "../../model/SymbolsModel";
 // import { BoardRenderer } from "../../view/BoardRenderer";
 import { BoardAnimator } from "../../view/BoardAnimator";
@@ -36,7 +37,7 @@ export class SpinButtonController {
             this.animator.runDropDown();
             setTimeout(() => {
                 this.renderer.renderNormal();
-            }, 3000);
+            }, 1000);
         };
 
         spinButtonSpriteNormal.on("mouseover", () => {
