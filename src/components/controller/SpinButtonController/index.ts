@@ -1,4 +1,6 @@
 import * as PIXI from "pixi.js";
+import { Howl } from "howler";
+
 import { SymbolsPack, Sprite } from "../../model/SymbolsModel";
 // import { BoardRenderer } from "../../view/BoardRenderer";
 import { BoardAnimator } from "../../view/BoardAnimator";
@@ -33,6 +35,10 @@ export class SpinButtonController {
         const { spinButtonSpriteNormal, spinButtonSpriteHover } = this.getSprites();
 
         const spin = () => {
+            const howl = new Howl({
+                src: ["../../../../assets/sounds/Start_Button.mp3"],
+            });
+            howl.play();
             this.renderer.renderPressed();
             this.animator.runDropDown();
             setTimeout(() => {

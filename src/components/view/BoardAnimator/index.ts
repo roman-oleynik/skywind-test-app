@@ -1,4 +1,5 @@
 import * as PIXI from "pixi.js";
+import { Howl } from "howler";
 import { BoardModel } from "../../model/BoardModel";
 import { Sprite } from "../../model/SymbolsModel";
 import { ReelArray } from "../../model/ReelModel";
@@ -100,6 +101,13 @@ export class BoardAnimator {
                             sprite.angle = angle;
                             this.ticker.remove(kickback);
                             this.ticker.add(() => landSprite(angle));
+                        }
+                        if (symbolIndex === 2) {
+                            const rand = Math.floor(Math.random() * 4) + 1;
+                            const howl = new Howl({
+                                src: [`../../../../assets/sounds/Reel_Stop_${rand}.mp3`],
+                            });
+                            howl.play();
                         }
                     };
                     const fall = () => {

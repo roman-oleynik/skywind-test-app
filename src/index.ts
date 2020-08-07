@@ -35,7 +35,6 @@ export class Main {
 
         loader.load();
     }
-
     private onAssetsLoaded(): void {
         this.createRenderer();
 
