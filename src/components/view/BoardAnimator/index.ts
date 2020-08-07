@@ -63,7 +63,11 @@ export class BoardAnimator {
 
         setTimeout(() => {
             this.runFalling();
+            this.deleteAnExtraMask(boardRenderer.mask);
         }, 1000);
+    }
+    private deleteAnExtraMask(mask: PIXI.Graphics) {
+        this.stage.removeChild(mask);
     }
     public runFalling(): void {
         const reels = this.board.getReels();
@@ -72,7 +76,6 @@ export class BoardAnimator {
             setTimeout(() => {
                 return reel.forEach((el: Sprite, symbolIndex: number) => {
                     const sprite = el.getView();
-
                     const landSprite = (randAngle: number) => {
                         const delta = 0.5;
                         if (randAngle > 0) {
@@ -94,6 +97,7 @@ export class BoardAnimator {
                     };
 
                     const kickback = () => {
+                        // sprite.mask;
                         const angle = 5;
                         const delta = -0.5;
                         sprite.angle += delta;

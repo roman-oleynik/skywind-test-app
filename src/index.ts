@@ -8,8 +8,9 @@ import { SpinButtonController } from "./components/controller/SpinButtonControll
 import "./style.css";
 
 export class Main {
-    private static readonly GAME_WIDTH = 800;
-    private static readonly GAME_HEIGHT = 600;
+    private static readonly GAME_WIDTH = window.innerWidth >= 800 || window.innerWidth >= 600 ? 800 : window.innerWidth;
+    private static readonly GAME_HEIGHT =
+        window.innerWidth >= 800 || window.innerWidth >= 600 ? 600 : window.innerWidth * 0.75;
     private readonly symbolsPack = SymbolsPack.getInstance();
     private readonly SpinButtonSprites = this.symbolsPack.getSpinButtonSprites();
     private readonly Symbols = this.symbolsPack.getSymbols();
@@ -59,9 +60,14 @@ export class Main {
 
         document.body.appendChild(this.app.view);
 
-        this.app.renderer.resize(Main.GAME_WIDTH, Main.GAME_HEIGHT);
-        // this.app.stage.scale.x = window.innerWidth / Main.GAME_WIDTH;
-        // this.app.stage.scale.y = window.innerHeight / Main.GAME_HEIGHT;
+        if (window.innerWidth <= 800) {
+            this.app.stage.scale.x = window.innerWidth / 800;
+            this.app.stage.scale.y = window.innerWidth / 800;
+        } else {
+            this.app.stage.scale.x = 1;
+            this.app.stage.scale.y = 1;
+        }
+        // this.app.renderer.resize(Main.GAME_WIDTH, Main.GAME_HEIGHT);
 
         window.addEventListener("resize", this.onResize.bind(this));
     }
@@ -71,9 +77,14 @@ export class Main {
             return;
         }
 
-        this.app.renderer.resize(Main.GAME_WIDTH, Main.GAME_HEIGHT);
-        // this.app.stage.scale.x = window.innerWidth / Main.GAME_WIDTH;
-        // this.app.stage.scale.y = window.innerHeight / Main.GAME_HEIGHT;
+        // this.app.renderer.resize(Main.GAME_WIDTH, Main.GAME_HEIGHT);
+        if (window.innerWidth <= 800) {
+            this.app.stage.scale.x = window.innerWidth / 800;
+            this.app.stage.scale.y = window.innerWidth / 800;
+        } else {
+            this.app.stage.scale.x = 1;
+            this.app.stage.scale.y = 1;
+        }
     }
 }
 

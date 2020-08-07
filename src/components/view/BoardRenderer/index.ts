@@ -4,6 +4,7 @@ import { Sprite } from "../../model/SymbolsModel";
 import { ReelArray } from "../../model/ReelModel";
 
 export class BoardRenderer {
+    public mask: PIXI.Graphics = new PIXI.Graphics();
     private marginTop = 0;
     private marginLeft = 0;
     constructor(
@@ -15,6 +16,12 @@ export class BoardRenderer {
     ) {
         this.marginLeft = (800 - this.size * 5) / 2 + this.size;
         this.marginTop = 40 + this.size;
+        this.createMask();
+    }
+    private createMask(): void {
+        this.mask.beginFill(0xff0000);
+        this.mask.drawRect(0, 40, 800, 460);
+        this.stage.addChild(this.mask);
     }
     public renderInitially(): void {
         const reelsArr = this.board.getReels();
@@ -29,6 +36,7 @@ export class BoardRenderer {
                 );
                 const sprite = el.getView();
 
+                sprite.mask = this.mask;
                 sprite.anchor.y = 1;
                 sprite.anchor.x = 1;
 
@@ -49,6 +57,7 @@ export class BoardRenderer {
                 );
 
                 const sprite = el.getView();
+                sprite.mask = this.mask;
                 sprite.anchor.y = 1;
                 sprite.anchor.x = 1;
                 this.stage.addChild(sprite);

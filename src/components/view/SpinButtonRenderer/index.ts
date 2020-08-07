@@ -3,6 +3,7 @@ import { Sprite } from "../../model/SymbolsModel";
 
 export class SpinButtonRenderer {
     private label: PIXI.Text;
+
     constructor(private sprites: Record<string, Sprite>, private stage: PIXI.Container) {
         this.label = new PIXI.Text("SPIN");
         this.label.position.x = 728;
@@ -34,7 +35,6 @@ export class SpinButtonRenderer {
         this.removeAllSprites();
         this.removeLabel();
         this.sprites.normal.setView(90, 90, 700, 500);
-        // this.sprites.normal.getView().zIndex = 3;
         this.stage.addChild(this.sprites.normal.getView());
         this.addLabel("rgba(255,255,0,0.8)", 4);
     }
@@ -42,7 +42,6 @@ export class SpinButtonRenderer {
         this.removeAllSprites();
         this.removeLabel();
         this.sprites.hover.setView(90, 90, 700, 500);
-        // this.sprites.hover.getView().zIndex = 3;
         this.stage.addChild(this.sprites.hover.getView());
         this.addLabel("rgba(255,255,0,0.9)", 4);
     }
@@ -50,7 +49,6 @@ export class SpinButtonRenderer {
         this.removeAllSprites();
         this.removeLabel();
         this.sprites.pressed.setView(90, 90, 700, 500);
-        // this.sprites.pressed.getView().zIndex = 3;
         this.stage.addChild(this.sprites.pressed.getView());
         this.addLabel("rgba(255,255,0,0.3)", 8);
     }
