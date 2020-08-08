@@ -1,34 +1,28 @@
 import { ReelArray, Reel } from "../ReelModel";
-import { SymbolsPack } from "../SymbolsModel";
-
-export type BoardArray = Array<ReelArray>;
+import { SymbolsPack } from "../SymbolsPack";
 
 export class BoardModel {
-    private board: BoardArray = [];
+    private board: Array<ReelArray> = [];
 
     constructor() {
-        this.fillBoardByReels();
+        this._fillBoardByReels();
     }
 
-    private fillBoardByReels(): void {
-        const result: BoardArray = [];
+    private _fillBoardByReels(): void {
+        const result: Array<ReelArray> = [];
 
         for (let i = 0; i < 5; i++) {
-            result.push(new Reel(SymbolsPack.getInstance()).getReelElements());
+            result.push(new Reel(SymbolsPack.getInstance()).getElements());
         }
 
         this.board = result;
     }
 
-    public refreshBoard(): void {
-        this.fillBoardByReels();
+    public refresh(): void {
+        this._fillBoardByReels();
     }
 
-    public getReels(): BoardArray {
+    public getReels(): Array<ReelArray> {
         return this.board;
-    }
-
-    public setBoardArray(arr: BoardArray): void {
-        this.board = arr;
     }
 }

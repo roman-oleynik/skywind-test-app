@@ -1,10 +1,10 @@
 import * as PIXI from "pixi.js";
-import { Sprite } from "../../model/SymbolsModel";
+import { Sprite } from "../../model/Sprite";
 
 export class SpinButtonRenderer {
     private label: PIXI.Text;
 
-    constructor(private sprites: Record<string, Sprite>, private stage: PIXI.Container) {
+    constructor(public sprites: Record<string, Sprite>, private stage: PIXI.Container) {
         this.label = new PIXI.Text("SPIN");
         this.label.position.x = 728;
         this.label.position.y = 518;
@@ -34,21 +34,43 @@ export class SpinButtonRenderer {
     public renderNormal(): void {
         this.removeAllSprites();
         this.removeLabel();
-        this.sprites.normal.setView(90, 90, 700, 500);
+        this.sprites.normal.setView({
+            height: 90,
+            width: 90,
+            position: {
+                x: 700,
+                y: 500,
+            },
+        });
+
         this.stage.addChild(this.sprites.normal.getView());
         this.addLabel("rgba(255,255,0,0.8)", 4);
     }
     public renderHover(): void {
         this.removeAllSprites();
         this.removeLabel();
-        this.sprites.hover.setView(90, 90, 700, 500);
+        this.sprites.hover.setView({
+            height: 90,
+            width: 90,
+            position: {
+                x: 700,
+                y: 500,
+            },
+        });
         this.stage.addChild(this.sprites.hover.getView());
         this.addLabel("rgba(255,255,0,0.9)", 4);
     }
     public renderPressed(): void {
         this.removeAllSprites();
         this.removeLabel();
-        this.sprites.pressed.setView(90, 90, 700, 500);
+        this.sprites.pressed.setView({
+            height: 90,
+            width: 90,
+            position: {
+                x: 700,
+                y: 500,
+            },
+        });
         this.stage.addChild(this.sprites.pressed.getView());
         this.addLabel("rgba(255,255,0,0.3)", 8);
     }

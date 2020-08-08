@@ -1,4 +1,5 @@
-import { SymbolsPack, Sprite } from "../SymbolsModel";
+import { Sprite } from "../Sprite";
+import { SymbolsPack } from "../SymbolsPack";
 
 export type ReelArray = Sprite[];
 
@@ -6,10 +7,10 @@ export class Reel {
     private reel: ReelArray = [];
 
     constructor(private readonly symbolsPack: SymbolsPack) {
-        this.buildUsingRandomSymbols();
+        this._buildUsingRandomSymbols();
     }
 
-    private buildUsingRandomSymbols(): void {
+    private _buildUsingRandomSymbols(): void {
         const result = [];
 
         for (let i = 0; i < 3; i++) {
@@ -18,7 +19,7 @@ export class Reel {
         }
         this.reel = result;
     }
-    public getReelElements(): ReelArray {
+    public getElements(): ReelArray {
         return this.reel;
     }
 }
