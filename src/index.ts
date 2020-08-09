@@ -13,21 +13,19 @@ export class Main {
     public GAME_HEIGHT = window.innerWidth >= 800 ? 600 : window.innerWidth * 0.75;
     private readonly symbolsPack = SymbolsPack.getInstance();
     private readonly buttonSprites = this.symbolsPack.getSpinButtonSprites();
-    private readonly Symbols = this.symbolsPack.getSymbols();
+    private readonly symbols = this.symbolsPack.getSymbols();
 
     private app!: PIXI.Application;
 
     constructor() {
-        window.onload = (): void => {
-            this.startLoadingAssets();
-        };
+        this._startLoadingAssets();
     }
 
-    private startLoadingAssets(): void {
+    private _startLoadingAssets(): void {
         const loader = PIXI.Loader.shared;
 
-        for (const key in this.Symbols) {
-            loader.add(key, this.Symbols[key].getUrl());
+        for (const key in this.symbols) {
+            loader.add(key, this.symbols[key].getUrl());
         }
 
         loader.onComplete.once(() => {
@@ -37,7 +35,7 @@ export class Main {
         loader.load();
     }
     private onAssetsLoaded(): void {
-        this.createRenderer();
+        this._createRenderer();
 
         const boardModel = new BoardModel();
         const boardRenderer = new BoardRenderer(boardModel.getReels(), this.app, 150);
@@ -47,7 +45,7 @@ export class Main {
         new AppController(boardModel, boardAnimator, boardRenderer, spinButtonRenderer, this.app).init();
     }
 
-    private createRenderer(): void {
+    private _createRenderer(): void {
         this.app = new PIXI.Application({
             backgroundColor: 0x000000,
             width: this.GAME_WIDTH,
@@ -56,25 +54,20 @@ export class Main {
 
         document.body.appendChild(this.app.view);
 
-        if (window.innerWidth <= 800) {
-            this.app.stage.scale.x = window.innerWidth / 800;
-            this.app.stage.scale.y = window.innerWidth / 800;
-        } else {
-            this.app.stage.scale.x = 1;
-            this.app.stage.scale.y = 1;
-        }
+        this._scaleStage();
 
-        window.addEventListener("resize", this.onResize.bind(this));
+        window.addEventListener("resize", this._onResize.bind(this));
     }
 
-    private onResize(): void {
+    private _onResize(): void {
         if (!this.app) {
             return;
         }
-
+        this._scaleStage();
+    }
+    private _scaleStage() {
         if (window.innerWidth <= 800) {
             this.app.renderer.resize(window.innerWidth, window.innerWidth * 0.75);
-
             this.app.stage.scale.x = window.innerWidth / 800;
             this.app.stage.scale.y = window.innerWidth / 800;
         } else {
@@ -83,5 +76,6 @@ export class Main {
         }
     }
 }
-
-new Main();
+window.onload = () => {
+    new Main();
+};

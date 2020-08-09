@@ -1,6 +1,7 @@
 import * as PIXI from "pixi.js";
 import { Sprite } from "../../model/Sprite";
 import { ReelArray } from "../../model/ReelModel";
+import { throttling } from "../../../utils/throttling";
 
 export class BoardRenderer {
     public mask: PIXI.Graphics = new PIXI.Graphics();
@@ -15,6 +16,13 @@ export class BoardRenderer {
         this.mask.beginFill(0xff0000);
         this.mask.drawRect(0, 40, 800, 460);
         this.app.stage.addChild(this.mask);
+
+        const onResize = () => {
+            this.mask = this.mask.drawRect(0, 40, window.innerWidth, 460);
+            this.app.stage.addChild(this.mask);
+        };
+
+        window.onresize = throttling(onResize, 7);
     }
     public render(position: number): void {
         this.marginTop = position;

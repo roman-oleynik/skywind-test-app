@@ -76,7 +76,7 @@ export class AppController {
             this.spinButtonRenderer.renderNormal();
         });
 
-        spinButtonSpriteNormal.on("mousedown", this._spin.bind(this));
-        spinButtonSpriteHover.on("mousedown", this._spin.bind(this));
+        spinButtonSpriteNormal.on("click", this._spin.bind(this));
+        spinButtonSpriteHover.on("click", this._spin.bind(this));
     }
 }

@@ -5,10 +5,10 @@ export class BoardModel {
     private board: Array<ReelArray> = [];
 
     constructor() {
-        this._fillBoardByReels();
+        this._fillByReels();
     }
 
-    private _fillBoardByReels(): void {
+    private _fillByReels(): void {
         const result: Array<ReelArray> = [];
 
         for (let i = 0; i < 5; i++) {
@@ -19,7 +19,7 @@ export class BoardModel {
     }
 
     public refresh(): void {
-        this._fillBoardByReels();
+        this._fillByReels();
     }
 
     public getReels(): Array<ReelArray> {
