@@ -1,18 +1,18 @@
-import { ReelArray, Reel } from "../ReelModel";
+import { Reel, ReelModel } from "../ReelModel";
 import { SymbolsPack } from "../SymbolsPack";
 
 export class BoardModel {
-    private board: Array<ReelArray> = [];
+    private board: Array<Reel> = [];
 
     constructor() {
         this._fillByReels();
     }
 
     private _fillByReels(): void {
-        const result: Array<ReelArray> = [];
+        const result: Array<Reel> = [];
 
         for (let i = 0; i < 5; i++) {
-            result.push(new Reel(SymbolsPack.getInstance()).getElements());
+            result.push(new ReelModel(SymbolsPack.getInstance()).getElements());
         }
 
         this.board = result;
@@ -22,7 +22,7 @@ export class BoardModel {
         this._fillByReels();
     }
 
-    public getReels(): Array<ReelArray> {
+    public getReels(): Array<Reel> {
         return this.board;
     }
 }

@@ -39,8 +39,8 @@ export class Main {
 
         const boardModel = new BoardModel();
         const boardRenderer = new BoardRenderer(boardModel.getReels(), this.app, 150);
-        const boardAnimator = new BoardAnimator(boardModel, this.app, 150);
         const spinButtonRenderer = new SpinButtonRenderer(this.buttonSprites, this.app.stage);
+        const boardAnimator = new BoardAnimator(boardModel, spinButtonRenderer, this.app, 150);
 
         new AppController(boardModel, boardAnimator, boardRenderer, spinButtonRenderer, this.app).init();
     }

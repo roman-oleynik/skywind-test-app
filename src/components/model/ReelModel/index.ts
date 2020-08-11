@@ -1,10 +1,10 @@
 import { Sprite } from "../Sprite";
 import { SymbolsPack } from "../SymbolsPack";
 
-export type ReelArray = Sprite[];
+export type Reel = Sprite[];
 
-export class Reel {
-    private reel: ReelArray = [];
+export class ReelModel {
+    private reel: Reel = [];
 
     constructor(private readonly symbolsPack: SymbolsPack) {
         this._buildUsingRandomSymbols();
@@ -19,7 +19,7 @@ export class Reel {
         }
         this.reel = result;
     }
-    public getElements(): ReelArray {
+    public getElements(): Reel {
         return this.reel;
     }
 }

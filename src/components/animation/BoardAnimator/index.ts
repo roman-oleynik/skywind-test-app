@@ -2,12 +2,29 @@ import * as PIXI from "pixi.js";
 import { Howl } from "howler";
 import { BoardModel } from "../../model/BoardModel";
 import { Sprite } from "../../model/Sprite";
-import { ReelArray } from "../../model/ReelModel";
+import { Reel } from "../../model/ReelModel";
+import { SpinButtonRenderer } from "../../rendering/SpinButtonRenderer";
+
+type SpritesFallingParams = {
+    from: number;
+    to: number;
+    isDropped: boolean;
+    spriteParams: {
+        sprite: Sprite;
+        spriteIndex?: number;
+        reelIndex?: number;
+    };
+};
 
 export class BoardAnimator {
     private marginTop = 0;
     private marginLeft = 0;
-    constructor(private board: BoardModel, private app: PIXI.Application, private readonly size: number) {
+    constructor(
+        private board: BoardModel,
+        private spinButtonRenderer: SpinButtonRenderer,
+        private app: PIXI.Application,
+        private readonly size: number
+    ) {
         this.marginLeft = (800 - this.size * 5) / 2;
         this.marginTop = 40 + this.size;
     }
@@ -17,99 +34,137 @@ export class BoardAnimator {
         });
         sound.play();
     }
-    public runDropDown(): void {
-        const reels = this.board.getReels();
+    private _tilt(sprite: Sprite): () => void {
+        const tilt = () => {
+            const randAngle = Math.floor(Math.random() * 2) - 1;
+            const randAngleDelta = Math.random() * 0.2 - 0.1;
 
-        reels.forEach((reel: ReelArray, reelIndex: number) => {
-            const delayOfReelFalling = 30 * reelIndex;
-            setTimeout(() => {
-                return reel.forEach((sprite: Sprite, spriteIndex: number) => {
-                    const tilt = () => {
-                        const randAngle = Math.floor(Math.random() * 2) - 1;
-                        const randAngleDelta = Math.random() * 0.2 - 0.1;
+            const curAngle = sprite.getView().angle;
 
-                        const curAngle = sprite.getView().angle;
-
-                        sprite.setView({ angle: curAngle + randAngleDelta });
-                        if (curAngle >= randAngle || curAngle <= randAngle) {
-                            sprite.setView({ angle: randAngle });
-                            this.app.ticker.remove(tilt);
-                        }
-                    };
-                    const dropDown = () => {
-                        const threshold = this.marginTop + spriteIndex * this.size + 20;
-                        const { x, y } = sprite.getView().position;
-
-                        sprite.setView({ position: { x, y: y + 5 } });
-
-                        if (y >= threshold) {
-                            sprite.setView({ position: { x, y: y + 30 } });
-                            if (y >= 600) {
-                                sprite.setView({ position: { x, y: -300 } });
-                                this.app.ticker.remove(dropDown);
-                                this.app.stage.removeChild(sprite.getView());
-                            }
-                        }
-                        this.app.renderer.render(this.app.stage);
-                    };
-
-                    const delayOfSpriteFalling = 90 - (spriteIndex + 1) * 30;
-                    setTimeout(() => {
-                        this.app.ticker.add(dropDown);
-                        this.app.ticker.add(tilt);
-                    }, delayOfSpriteFalling);
-                });
-            }, delayOfReelFalling);
-        });
+            sprite.setView({ angle: curAngle + randAngleDelta });
+            if (curAngle >= randAngle || curAngle <= randAngle) {
+                sprite.setView({ angle: randAngle });
+                this.app.ticker.remove(tilt);
+            }
+        };
+        return tilt;
     }
 
-    public runFalling(): void {
+    private _landSprite(sprite: Sprite): () => void {
+        const landSprite = () => {
+            const curAngle = sprite.getView().angle;
+            sprite.setView({ angle: curAngle - 0.5 });
+
+            if (curAngle < 1) {
+                sprite.setView({ angle: 0 });
+                this.app.ticker.remove(landSprite);
+            }
+        };
+        return landSprite;
+    }
+
+    private _kickback(sprite: Sprite, spriteIndex: number, reelIndex: number): () => void {
+        const kickback = () => {
+            const curAngle = sprite.getView().angle;
+
+            sprite.setView({ angle: curAngle - 0.5 });
+            if (curAngle >= 5 || curAngle <= 5) {
+                sprite.setView({ angle: 5 });
+                this.app.ticker.remove(kickback);
+                this.app.ticker.add(this._landSprite(sprite));
+            }
+            if (spriteIndex === 2) {
+                const randOfSounds = Math.floor(Math.random() * 4) + 1;
+                this._makeSoundOfFalling(randOfSounds);
+            }
+            if (reelIndex === 4 && spriteIndex === 2) {
+                this.spinButtonRenderer.renderNormal();
+            }
+        };
+        return kickback;
+    }
+
+    private _fall(params: SpritesFallingParams): () => void {
+        const { from, to, spriteParams, isDropped } = params;
+        const { sprite, spriteIndex, reelIndex } = spriteParams;
+
+        const fall = () => {
+            const { x, y } = sprite.getView().position;
+
+            sprite.setView({ position: { x, y: y + 5 } });
+
+            if (y >= from) {
+                sprite.setView({ position: { x, y: y + 30 } });
+                if (y >= to) {
+                    sprite.setView({ position: { x, y: to } });
+                    this.app.ticker.remove(fall);
+                    if (isDropped) {
+                        this.app.stage.removeChild(sprite.getView());
+                    } else {
+                        this.app.ticker.add(this._kickback(sprite, spriteIndex as number, reelIndex as number));
+                    }
+                }
+            }
+        };
+        return fall;
+    }
+    private _getParamsForFallingFromTop(sprite: Sprite, spriteIndex: number, reelIndex: number): SpritesFallingParams {
+        return {
+            from: -270,
+            to: this.marginTop + spriteIndex * this.size,
+            isDropped: false,
+            spriteParams: {
+                sprite,
+                spriteIndex,
+                reelIndex,
+            },
+        };
+    }
+    private _getParamsForDropping(sprite: Sprite, spriteIndex: number): SpritesFallingParams {
+        return {
+            from: this.marginTop + spriteIndex * this.size + 20,
+            to: 600,
+            isDropped: true,
+            spriteParams: {
+                sprite,
+            },
+        };
+    }
+    private _makeDelayForReelFalling(func: () => void, reelIndex: number): void {
+        const delay = 30 * reelIndex;
+        setTimeout(func, delay);
+    }
+    private _makeDelayForSpriteFalling(func: () => void, spriteIndex: number): void {
+        const delay = 90 - (spriteIndex + 1) * 30;
+        setTimeout(func, delay);
+    }
+    private _runFalling(isDropping: boolean): void {
         const reels = this.board.getReels();
 
-        reels.forEach((reel: ReelArray, reelIndex: number) => {
-            setTimeout(() => {
-                return reel.forEach((sprite: Sprite, symbolIndex: number) => {
-                    const landSprite = () => {
-                        const curAngle = sprite.getView().angle;
-                        sprite.setView({ angle: curAngle - 0.5 });
+        reels.forEach((reel: Reel, reelIndex: number) => {
+            this._makeDelayForReelFalling(() => {
+                return reel.forEach((sprite: Sprite, spriteIndex: number) => {
+                    let params: SpritesFallingParams = {} as SpritesFallingParams;
+                    if (isDropping) {
+                        params = this._getParamsForDropping(sprite, spriteIndex);
+                    } else {
+                        params = this._getParamsForFallingFromTop(sprite, spriteIndex, reelIndex);
+                    }
 
-                        if (curAngle < 1) {
-                            sprite.setView({ angle: 0 });
-                            this.app.ticker.remove(landSprite);
+                    this._makeDelayForSpriteFalling(() => {
+                        this.app.ticker.add(this._fall(params));
+                        if (isDropping) {
+                            this.app.ticker.add(this._tilt(sprite));
                         }
-                    };
-
-                    const kickback = () => {
-                        const curAngle = sprite.getView().angle;
-
-                        sprite.setView({ angle: curAngle - 0.5 });
-                        if (curAngle >= 5 || curAngle <= 5) {
-                            sprite.setView({ angle: 5 });
-                            this.app.ticker.remove(kickback);
-                            this.app.ticker.add(landSprite);
-                        }
-                        if (symbolIndex === 2) {
-                            const randOfSounds = Math.floor(Math.random() * 4) + 1;
-                            this._makeSoundOfFalling(randOfSounds);
-                        }
-                    };
-                    const fall = () => {
-                        const threshold = this.marginTop + symbolIndex * this.size;
-                        const { x, y } = sprite.getView().position;
-
-                        sprite.setView({ position: { x, y: y + 30 } });
-                        if (y >= threshold) {
-                            sprite.setView({ position: { x, y: threshold } });
-                            this.app.ticker.remove(fall);
-                            this.app.ticker.add(kickback);
-                        }
-                    };
-                    this.app.renderer.render(this.app.stage);
-                    setTimeout(() => {
-                        this.app.ticker.add(fall);
-                    }, Math.floor(Math.random() * 70) + 30);
+                    }, spriteIndex);
                 });
-            }, 30 * reelIndex);
+            }, reelIndex);
         });
+    }
+    public runDropDown(): void {
+        this._runFalling(true);
+    }
+    public runFallingFromTop(): void {
+        this._runFalling(false);
     }
 }

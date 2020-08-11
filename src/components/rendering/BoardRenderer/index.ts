@@ -1,13 +1,13 @@
 import * as PIXI from "pixi.js";
 import { Sprite } from "../../model/Sprite";
-import { ReelArray } from "../../model/ReelModel";
+import { Reel } from "../../model/ReelModel";
 import { throttling } from "../../../utils/throttling";
 
 export class BoardRenderer {
     public mask: PIXI.Graphics = new PIXI.Graphics();
     private marginTop = 0;
     private marginLeft = 0;
-    constructor(private reels: ReelArray[], private readonly app: PIXI.Application, private readonly size: number) {
+    constructor(private reels: Reel[], private readonly app: PIXI.Application, private readonly size: number) {
         this.marginLeft = (800 - this.size * 5) / 2 + this.size;
         this.marginTop = 40 + this.size;
         this._createMask();
@@ -27,7 +27,7 @@ export class BoardRenderer {
     public render(position: number): void {
         this.marginTop = position;
 
-        this.reels.forEach((reel: ReelArray, reelIndex: number) => {
+        this.reels.forEach((reel: Reel, reelIndex: number) => {
             return reel.forEach((el: Sprite, i: number) => {
                 el.setView({
                     height: this.size,

@@ -4,11 +4,11 @@ import { Howl } from "howler";
 import { BoardAnimator } from "../../animation/BoardAnimator";
 import { SpinButtonRenderer } from "../../rendering/SpinButtonRenderer";
 import { BoardRenderer } from "../../rendering/BoardRenderer";
-import { ReelArray } from "../../model/ReelModel";
+import { Reel } from "../../model/ReelModel";
 import { BoardModel } from "../../model/BoardModel";
 
 export class AppController {
-    private reels: ReelArray[];
+    private reels: Reel[];
     private startSpinSound: Howl = new Howl({
         src: ["../../../../assets/sounds/Start_Button.mp3"],
     });
@@ -60,10 +60,8 @@ export class AppController {
         this._rerenderSpritesOnTop();
 
         setTimeout(() => {
-            this.animator.runFalling();
+            this.animator.runFallingFromTop();
             this._deleteAnExtraMask(this.boardRenderer.mask);
-
-            this.spinButtonRenderer.renderNormal();
         }, 1000);
     }
     private _addMouseEventsListeners(): void {
