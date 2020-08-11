@@ -1,5 +1,5 @@
 import * as PIXI from "pixi.js";
-import { SymbolsPack } from "./components/model/SymbolsPack";
+import { SpritesPack } from "./components/model/SpritesPack";
 import { BoardModel } from "./components/model/BoardModel";
 import { BoardRenderer } from "./components/rendering/BoardRenderer";
 import { SpinButtonRenderer } from "./components/rendering/SpinButtonRenderer";
@@ -11,7 +11,7 @@ import "./style.css";
 export class Main {
     public GAME_WIDTH = window.innerWidth >= 800 ? 800 : window.innerWidth;
     public GAME_HEIGHT = window.innerWidth >= 800 ? 600 : window.innerWidth * 0.75;
-    private readonly symbolsPack = SymbolsPack.getInstance();
+    private readonly symbolsPack = SpritesPack.getInstance();
     private readonly buttonSprites = this.symbolsPack.getSpinButtonSprites();
     private readonly symbols = this.symbolsPack.getSymbols();
 

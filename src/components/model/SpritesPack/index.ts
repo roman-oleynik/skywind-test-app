@@ -1,17 +1,17 @@
 import { SpriteModel } from "../SpriteModel";
 
-export class SymbolsPack {
-    private static instance: SymbolsPack;
+export class SpritesPack {
+    private static instance: SpritesPack;
     private constructor() {
         return;
     }
 
-    public static getInstance(): SymbolsPack {
-        if (!SymbolsPack.instance) {
-            SymbolsPack.instance = new SymbolsPack();
+    public static getInstance(): SpritesPack {
+        if (!SpritesPack.instance) {
+            SpritesPack.instance = new SpritesPack();
         }
 
-        return SymbolsPack.instance;
+        return SpritesPack.instance;
     }
 
     public getSymbols(): Record<string, SpriteModel> {
