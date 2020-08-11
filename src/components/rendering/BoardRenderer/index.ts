@@ -1,5 +1,5 @@
 import * as PIXI from "pixi.js";
-import { Sprite } from "../../model/Sprite";
+import { SpriteModel } from "../../model/SpriteModel";
 import { Reel } from "../../model/ReelModel";
 import { throttling } from "../../../utils/throttling";
 
@@ -28,8 +28,8 @@ export class BoardRenderer {
         this.marginTop = position;
 
         this.reels.forEach((reel: Reel, reelIndex: number) => {
-            return reel.forEach((el: Sprite, i: number) => {
-                el.setView({
+            return reel.forEach((sprite: SpriteModel, i: number) => {
+                sprite.setView({
                     height: this.size,
                     width: this.size,
                     position: {
@@ -42,9 +42,8 @@ export class BoardRenderer {
                         y: 1,
                     },
                 });
-                const sprite = el.getView();
 
-                this.app.stage.addChild(sprite);
+                this.app.stage.addChild(sprite.getView());
             });
         });
     }

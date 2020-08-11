@@ -1,7 +1,7 @@
-import { Sprite } from "../Sprite";
+import { SpriteModel } from "../SpriteModel";
 import { SymbolsPack } from "../SymbolsPack";
 
-export type Reel = Sprite[];
+export type Reel = SpriteModel[];
 
 export class ReelModel {
     private reel: Reel = [];
