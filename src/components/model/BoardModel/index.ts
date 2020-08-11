@@ -1,5 +1,5 @@
 import { Reel, ReelModel } from "../ReelModel";
-import { SymbolsPack } from "../SymbolsPack";
+import { SpritesPack } from "../SpritesPack";
 
 export class BoardModel {
     private board: Array<Reel> = [];
@@ -12,7 +12,7 @@ export class BoardModel {
         const result: Array<Reel> = [];
 
         for (let i = 0; i < 5; i++) {
-            result.push(new ReelModel(SymbolsPack.getInstance()).getElements());
+            result.push(new ReelModel(SpritesPack.getInstance()).getElements());
         }
 
         this.board = result;

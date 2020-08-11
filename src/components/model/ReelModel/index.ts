@@ -1,12 +1,12 @@
-import { Sprite } from "../Sprite";
-import { SymbolsPack } from "../SymbolsPack";
+import { SpriteModel } from "../SpriteModel";
+import { SpritesPack } from "../SpritesPack";
 
-export type Reel = Sprite[];
+export type Reel = SpriteModel[];
 
 export class ReelModel {
     private reel: Reel = [];
 
-    constructor(private readonly symbolsPack: SymbolsPack) {
+    constructor(private readonly symbolsPack: SpritesPack) {
         this._buildUsingRandomSymbols();
     }
 

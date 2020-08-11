@@ -1,7 +1,7 @@
 import * as PIXI from "pixi.js";
 import { Howl } from "howler";
 import { BoardModel } from "../../model/BoardModel";
-import { Sprite } from "../../model/Sprite";
+import { SpriteModel } from "../../model/SpriteModel";
 import { Reel } from "../../model/ReelModel";
 import { SpinButtonRenderer } from "../../rendering/SpinButtonRenderer";
 
@@ -10,7 +10,7 @@ type SpritesFallingParams = {
     to: number;
     isDropped: boolean;
     spriteParams: {
-        sprite: Sprite;
+        sprite: SpriteModel;
         spriteIndex?: number;
         reelIndex?: number;
     };
@@ -34,7 +34,7 @@ export class BoardAnimator {
         });
         sound.play();
     }
-    private _tilt(sprite: Sprite): () => void {
+    private _tilt(sprite: SpriteModel): () => void {
         const tilt = () => {
             const randAngle = Math.floor(Math.random() * 2) - 1;
             const randAngleDelta = Math.random() * 0.2 - 0.1;
@@ -50,7 +50,7 @@ export class BoardAnimator {
         return tilt;
     }
 
-    private _landSprite(sprite: Sprite): () => void {
+    private _landSprite(sprite: SpriteModel): () => void {
         const landSprite = () => {
             const curAngle = sprite.getView().angle;
             sprite.setView({ angle: curAngle - 0.5 });
@@ -63,7 +63,7 @@ export class BoardAnimator {
         return landSprite;
     }
 
-    private _kickback(sprite: Sprite, spriteIndex: number, reelIndex: number): () => void {
+    private _kickback(sprite: SpriteModel, spriteIndex: number, reelIndex: number): () => void {
         const kickback = () => {
             const curAngle = sprite.getView().angle;
 
@@ -108,7 +108,11 @@ export class BoardAnimator {
         };
         return fall;
     }
-    private _getParamsForFallingFromTop(sprite: Sprite, spriteIndex: number, reelIndex: number): SpritesFallingParams {
+    private _getParamsForFallingFromTop(
+        sprite: SpriteModel,
+        spriteIndex: number,
+        reelIndex: number
+    ): SpritesFallingParams {
         return {
             from: -270,
             to: this.marginTop + spriteIndex * this.size,
@@ -120,7 +124,7 @@ export class BoardAnimator {
             },
         };
     }
-    private _getParamsForDropping(sprite: Sprite, spriteIndex: number): SpritesFallingParams {
+    private _getParamsForDropping(sprite: SpriteModel, spriteIndex: number): SpritesFallingParams {
         return {
             from: this.marginTop + spriteIndex * this.size + 20,
             to: 600,
@@ -143,7 +147,7 @@ export class BoardAnimator {
 
         reels.forEach((reel: Reel, reelIndex: number) => {
             this._makeDelayForReelFalling(() => {
-                return reel.forEach((sprite: Sprite, spriteIndex: number) => {
+                return reel.forEach((sprite: SpriteModel, spriteIndex: number) => {
                     let params: SpritesFallingParams = {} as SpritesFallingParams;
                     if (isDropping) {
                         params = this._getParamsForDropping(sprite, spriteIndex);

@@ -15,7 +15,7 @@ type SpriteParams = {
     angle?: number;
 };
 
-export class Sprite {
+export class SpriteModel {
     private view: PIXI.Sprite;
 
     constructor(private readonly url: string) {

@@ -1,10 +1,10 @@
 import * as PIXI from "pixi.js";
-import { Sprite } from "../../model/Sprite";
+import { SpriteModel } from "../../model/SpriteModel";
 
 export class SpinButtonRenderer {
     private label: PIXI.Text;
 
-    constructor(public sprites: Record<string, Sprite>, private stage: PIXI.Container) {
+    constructor(public sprites: Record<string, SpriteModel>, private stage: PIXI.Container) {
         this.label = new PIXI.Text("SPIN");
         this.label.position.x = 728;
         this.label.position.y = 518;
